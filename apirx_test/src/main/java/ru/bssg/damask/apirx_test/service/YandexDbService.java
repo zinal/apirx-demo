@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Properties;
 import java.util.concurrent.CompletableFuture;
 import java.io.FileInputStream;
+import java.util.Collections;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import net.openhft.hashing.LongHashFunction;
@@ -25,6 +26,15 @@ import tech.ydb.table.values.PrimitiveValue;
 import tech.ydb.table.values.StructValue;
 import tech.ydb.table.values.Value;
 
+/**
+ * DB Service.
+ *
+ CREATE TABLE hashes(hash UInt64 NOT NULL, src Text, PRIMARY KEY(hash))
+ WITH(AUTO_PARTITIONING_BY_LOAD=ENABLED,
+      AUTO_PARTITIONING_MIN_PARTITIONS_COUNT=100,
+      AUTO_PARTITIONING_MAX_PARTITIONS_COUNT=200,
+      AUTO_PARTITIONING_PARTITION_SIZE_MB=100);
+ */
 @Service
 @Slf4j
 public class YandexDbService {
@@ -43,7 +53,7 @@ public class YandexDbService {
         return database;
     }
 
-    public Mono<List<String>> tokenizeManyTest(List<String> data) {
+    public Mono<List<String>> tokenizeRead(List<String> data) {
         String query = "DECLARE $input AS List<Struct<v:Uint64>>;" +
                 "SELECT x.token " +
                 "FROM AS_TABLE($input) i " +
@@ -61,6 +71,25 @@ public class YandexDbService {
                 rres.add(rs.getColumn(0).getText());
             }
             return rres;
+        }));
+    }
+
+    public Mono<List<String>> tokenizeWrite(List<String> data) {
+        String query = "DECLARE $input AS List<Struct<v:Uint64, s:Text>>;" +
+                "UPSERT INTO hashes SELECT v AS hash, s AS src FROM AS_TABLE($input);";
+        ArrayList<Value<?>> pack = new ArrayList<>();
+        data.stream().forEach(s -> {
+            pack.add(StructValue.of(
+                    "v", PrimitiveValue.newUint64(LongHashFunction.xx().hashChars(s)),
+                    "s", PrimitiveValue.newText(s)
+            ));
+        });
+        Value<?>[] values = new Value<?>[pack.size()];
+        pack.toArray(values);
+        Params params = Params.of("$input", ListValue.of(values));
+        CompletableFuture<Result<DataQueryResult>> r = retryCtx.supplyResult(session -> session.executeDataQuery(query, txControl, params));
+        return Mono.fromFuture(r.thenApply(z -> {
+            return Collections.emptyList();
         }));
     }
 

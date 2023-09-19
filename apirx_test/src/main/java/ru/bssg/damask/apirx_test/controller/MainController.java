@@ -20,9 +20,14 @@ public class MainController {
 
     private final YandexDbService tokenService;
 
-    @RequestMapping(value = "/tokenize_ydb_many_test", method = RequestMethod.POST, produces = { "application/json"})
-    public Mono<ResponseEntity<List<String>>> tokenizeYdbManeOne(@RequestBody List<String> reqData) {
-        return tokenService.tokenizeManyTest(reqData).map(ResponseEntity::ok);
+    @RequestMapping(value = "/tokenize_ydb_read", method = RequestMethod.POST, produces = { "application/json"})
+    public Mono<ResponseEntity<List<String>>> tokenizeYdbRead(@RequestBody List<String> reqData) {
+        return tokenService.tokenizeRead(reqData).map(ResponseEntity::ok);
+    }
+
+    @RequestMapping(value = "/tokenize_ydb_write", method = RequestMethod.POST, produces = { "application/json"})
+    public Mono<ResponseEntity<List<String>>> tokenizeYdbWrite(@RequestBody List<String> reqData) {
+        return tokenService.tokenizeWrite(reqData).map(ResponseEntity::ok);
     }
 
 }
