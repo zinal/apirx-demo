@@ -74,7 +74,7 @@ for (int x = 0; x &lt; tokens; x++) {
 	if (res.length() &gt; 0) res.append(&quot;,&quot;);
 	res.append(&quot;\&quot;A&quot;).append(String.valueOf(gen.nextInt(100000000))).append(&quot;\&quot;&quot;);
 }
-vars.put(&quot;RANDOM_STRING&quot;, res);
+vars.put(&quot;RANDOM_STRING&quot;, res.toString());
 </stringProp>
           </BeanShellPreProcessor>
           <hashTree/>
