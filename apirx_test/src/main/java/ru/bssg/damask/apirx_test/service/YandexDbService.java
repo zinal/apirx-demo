@@ -20,6 +20,7 @@ import tech.ydb.table.TableClient;
 import tech.ydb.table.query.DataQueryResult;
 import tech.ydb.table.query.Params;
 import tech.ydb.table.result.ResultSetReader;
+import tech.ydb.table.result.ValueReader;
 import tech.ydb.table.transaction.TxControl;
 import tech.ydb.table.values.ListValue;
 import tech.ydb.table.values.PrimitiveValue;
@@ -55,9 +56,9 @@ public class YandexDbService {
 
     public Mono<List<String>> tokenizeRead(List<String> data) {
         String query = "DECLARE $input AS List<Struct<v:Uint64>>;" +
-                "SELECT x.token " +
+                "SELECT i.hash, x.src " +
                 "FROM AS_TABLE($input) i " +
-                "INNER JOIN hashes x ON i.v=x.hash";
+                "LEFT JOIN hashes x ON i.v=x.hash";
         ArrayList<Value<?>> pack = new ArrayList<>();
         data.stream().forEach(s -> pack.add(StructValue.of("v", PrimitiveValue.newUint64(LongHashFunction.xx().hashChars(s)))));
         Value<?>[] values = new Value<?>[pack.size()];
@@ -68,7 +69,13 @@ public class YandexDbService {
             List<String> rres = new ArrayList<>();
             ResultSetReader rs = z.getValue().getResultSet(0);
             while (rs.next()) {
-                rres.add(rs.getColumn(0).getText());
+                long token = rs.getColumn(0).getUint64();
+                ValueReader vr = rs.getColumn(1);
+                if (vr.isOptionalItemPresent()) {
+                    rres.add(String.valueOf(token) + "/" + vr.getText());
+                } else {
+                    rres.add(String.valueOf(token) + "/-");
+                }
             }
             return rres;
         }));
