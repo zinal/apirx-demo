@@ -56,7 +56,7 @@ public class YandexDbService {
 
     public Mono<List<String>> tokenizeRead(List<String> data) {
         String query = "DECLARE $input AS List<Struct<v:Uint64>>;" +
-                "SELECT i.hash, x.src " +
+                "SELECT i.v, x.src " +
                 "FROM AS_TABLE($input) i " +
                 "LEFT JOIN hashes x ON i.v=x.hash";
         ArrayList<Value<?>> pack = new ArrayList<>();
