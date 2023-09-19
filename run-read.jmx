@@ -3,23 +3,13 @@
   <hashTree>
     <TestPlan guiclass="TestPlanGui" testclass="TestPlan" testname="Test Plan" enabled="true">
       <boolProp name="TestPlan.functional_mode">false</boolProp>
+      <boolProp name="TestPlan.tearDown_on_shutdown">false</boolProp>
       <boolProp name="TestPlan.serialize_threadgroups">false</boolProp>
       <elementProp name="TestPlan.user_defined_variables" elementType="Arguments" guiclass="ArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="true">
         <collectionProp name="Arguments.arguments"/>
       </elementProp>
-      <stringProp name="TestPlan.comments"></stringProp>
-      <stringProp name="TestPlan.user_define_classpath"></stringProp>
     </TestPlan>
     <hashTree>
-      <CounterConfig guiclass="CounterConfigGui" testclass="CounterConfig" testname="Counter" enabled="true">
-        <stringProp name="CounterConfig.start">0</stringProp>
-        <stringProp name="CounterConfig.end">100000</stringProp>
-        <stringProp name="CounterConfig.incr">1</stringProp>
-        <stringProp name="CounterConfig.name">CNT_BIG</stringProp>
-        <stringProp name="CounterConfig.format"></stringProp>
-        <boolProp name="CounterConfig.per_user">false</boolProp>
-      </CounterConfig>
-      <hashTree/>
       <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="Thread Group" enabled="true">
         <stringProp name="ThreadGroup.on_sample_error">continue</stringProp>
         <elementProp name="ThreadGroup.main_controller" elementType="LoopController" guiclass="LoopControlPanel" testclass="LoopController" testname="Loop Controller" enabled="true">
@@ -58,7 +48,7 @@
           <stringProp name="HTTPSampler.port">8080</stringProp>
           <stringProp name="HTTPSampler.protocol"></stringProp>
           <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-          <stringProp name="HTTPSampler.path">/v1/tokenize_ydb_write</stringProp>
+          <stringProp name="HTTPSampler.path">/v1/tokenize_ydb_read</stringProp>
           <stringProp name="HTTPSampler.method">POST</stringProp>
           <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
           <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
@@ -74,13 +64,15 @@
             <stringProp name="filename"></stringProp>
             <stringProp name="parameters"></stringProp>
             <boolProp name="resetInterpreter">false</boolProp>
-            <stringProp name="script">int tokens = 1000;
-long cntBig = Long.parseLong(vars.get(&quot;CNT_BIG&quot;)) * tokens;
+            <stringProp name="script">import java.util.Random;
+
+Random gen = new Random();
+//int tokens = gen.nextInt(20) + 1;
+int tokens = 1000;
 StringBuilder res = new StringBuilder();
 for (int x = 0; x &lt; tokens; x++) {
 	if (res.length() &gt; 0) res.append(&quot;,&quot;);
-	res.append(&quot;\&quot;A&quot;).append(String.valueOf(cntBig)).append(&quot;\&quot;&quot;);
-	++cntBig;
+	res.append(&quot;\&quot;A&quot;).append(gen.nextInt(100000000)).append(&quot;\&quot;&quot;);
 }
 vars.put(&quot;RANDOM_STRING&quot;, res.toString());
 </stringProp>
