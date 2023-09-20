@@ -46,7 +46,7 @@ public class YandexDbService {
     public static final String PROP_URL = "url";
     public static final String PROP_AUTH_MODE = "auth.mode";
     public static final String PROP_AUTH_USER = "auth.user";
-    public static final String PROP_AUTH_PASSWORD = "auth.user";
+    public static final String PROP_AUTH_PASSWORD = "auth.password";
     public static final String PROP_SAKEY_FILE = "sakey.file";
     public static final String PROP_POOL_MAX = "pool.max";
 

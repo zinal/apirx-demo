@@ -2,6 +2,9 @@
 <!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
 <properties>
 <entry key="url">grpcs://lb.etnbflkbqq52riotp620.ydb.mdb.yandexcloud.net:2135/?database=/ru-central1/b1gfvslmokutuvt2g019/etnbflkbqq52riotp620</entry>
+<entry key="auth.mode">SAKEY</entry> <!-- NONE, SAKEY, META, LOGIN -->
+<entry key="auth.user">username</entry>
+<entry key="auth.password">password</entry>
 <entry key="sakey.file">sakey.json</entry>
 <entry key="pool.max">1000</entry>
 </properties>
