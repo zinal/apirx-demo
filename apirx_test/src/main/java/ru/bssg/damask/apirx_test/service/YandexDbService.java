@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.Properties;
 import java.util.concurrent.CompletableFuture;
 import java.io.FileInputStream;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.Collections;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
@@ -48,6 +50,7 @@ public class YandexDbService {
     public static final String PROP_AUTH_USER = "auth.user";
     public static final String PROP_AUTH_PASSWORD = "auth.password";
     public static final String PROP_SAKEY_FILE = "sakey.file";
+    public static final String PROP_CA_FILE = "ca.file";
     public static final String PROP_POOL_MAX = "pool.max";
 
     private GrpcTransport transport;
@@ -120,6 +123,7 @@ public class YandexDbService {
             poolMax = 100;
         }
         String authMode = props.getProperty(PROP_AUTH_MODE, "NONE");
+        String caCertFile = props.getProperty(PROP_CA_FILE);
 
         GrpcTransportBuilder builder = GrpcTransport.forConnectionString(connectionString);
         if ("SAKEY".equalsIgnoreCase(authMode)) {
@@ -132,6 +136,9 @@ public class YandexDbService {
             String username = props.getProperty(PROP_AUTH_USER);
             String password = props.getProperty(PROP_AUTH_PASSWORD);
             builder = builder.withAuthProvider(new StaticCredentials(username, password));
+        }
+        if (caCertFile==null || caCertFile.length() > 0) {
+            builder.withSecureConnection(Files.readAllBytes(Paths.get(caCertFile)));
         }
         transport = builder.build();
         tableClient = TableClient.newClient(transport).sessionPoolSize(1, poolMax).build();
