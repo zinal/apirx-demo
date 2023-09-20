@@ -13,8 +13,11 @@ import net.openhft.hashing.LongHashFunction;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
 import tech.ydb.auth.iam.CloudAuthHelper;
+import tech.ydb.auth.iam.CloudAuthIdentity;
 import tech.ydb.core.Result;
+import tech.ydb.core.auth.StaticCredentials;
 import tech.ydb.core.grpc.GrpcTransport;
+import tech.ydb.core.grpc.GrpcTransportBuilder;
 import tech.ydb.table.SessionRetryContext;
 import tech.ydb.table.TableClient;
 import tech.ydb.table.query.DataQueryResult;
@@ -41,6 +44,9 @@ import tech.ydb.table.values.Value;
 public class YandexDbService {
 
     public static final String PROP_URL = "url";
+    public static final String PROP_AUTH_MODE = "auth.mode";
+    public static final String PROP_AUTH_USER = "auth.user";
+    public static final String PROP_AUTH_PASSWORD = "auth.user";
     public static final String PROP_SAKEY_FILE = "sakey.file";
     public static final String PROP_POOL_MAX = "pool.max";
 
@@ -109,15 +115,25 @@ public class YandexDbService {
         }
 
         String connectionString = props.getProperty(PROP_URL);
-        String saKeyFile = props.getProperty(PROP_SAKEY_FILE);
         int poolMax = Integer.parseInt(props.getProperty(PROP_POOL_MAX, "-1"));
         if (poolMax<1 || poolMax>1000) {
             poolMax = 100;
         }
+        String authMode = props.getProperty(PROP_AUTH_MODE, "NONE");
 
-        transport = GrpcTransport.forConnectionString(connectionString)
-                .withAuthProvider(CloudAuthHelper.getServiceAccountFileAuthProvider(saKeyFile))
-                .build();
+        GrpcTransportBuilder builder = GrpcTransport.forConnectionString(connectionString);
+        if ("SAKEY".equalsIgnoreCase(authMode)) {
+            String saKeyFile = props.getProperty(PROP_SAKEY_FILE);
+            builder = builder.withAuthProvider(
+                    CloudAuthHelper.getServiceAccountFileAuthProvider(saKeyFile));
+        } else if ("META".equalsIgnoreCase(authMode)) {
+            builder = builder.withAuthProvider(opt -> CloudAuthIdentity.metadataIdentity());
+        } else if ("LOGIN".equalsIgnoreCase(authMode)) {
+            String username = props.getProperty(PROP_AUTH_USER);
+            String password = props.getProperty(PROP_AUTH_PASSWORD);
+            builder = builder.withAuthProvider(new StaticCredentials(username, password));
+        }
+        transport = builder.build();
         tableClient = TableClient.newClient(transport).sessionPoolSize(1, poolMax).build();
         database = transport.getDatabase();
         retryCtx = SessionRetryContext.create(tableClient).build();
