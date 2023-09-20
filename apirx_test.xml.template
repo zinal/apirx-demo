@@ -7,4 +7,6 @@
 <entry key="auth.password">password</entry>
 <entry key="sakey.file">sakey.json</entry>
 <entry key="pool.max">1000</entry>
+<!-- <entry key="ca.file">ca.crt</entry> -->
+<!-- openssl s_client -showcerts -connect ycydb-s10:2136 -->
 </properties>
