@@ -18,6 +18,7 @@ import tech.ydb.auth.iam.CloudAuthHelper;
 import tech.ydb.auth.iam.CloudAuthIdentity;
 import tech.ydb.core.Result;
 import tech.ydb.core.auth.StaticCredentials;
+import tech.ydb.core.grpc.BalancingSettings;
 import tech.ydb.core.grpc.GrpcTransport;
 import tech.ydb.core.grpc.GrpcTransportBuilder;
 import tech.ydb.table.SessionRetryContext;
@@ -138,8 +139,9 @@ public class YandexDbService {
             builder = builder.withAuthProvider(new StaticCredentials(username, password));
         }
         if (caCertFile!=null && caCertFile.length() > 0) {
-            builder.withSecureConnection(Files.readAllBytes(Paths.get(caCertFile)));
+            builder = builder.withSecureConnection(Files.readAllBytes(Paths.get(caCertFile)));
         }
+        builder = builder.withBalancingSettings(BalancingSettings.detectLocalDs());
         transport = builder.build();
         tableClient = TableClient.newClient(transport).sessionPoolSize(1, poolMax).build();
         database = transport.getDatabase();
