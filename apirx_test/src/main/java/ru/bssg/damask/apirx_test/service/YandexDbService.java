@@ -137,7 +137,7 @@ public class YandexDbService {
             String password = props.getProperty(PROP_AUTH_PASSWORD);
             builder = builder.withAuthProvider(new StaticCredentials(username, password));
         }
-        if (caCertFile!=null || caCertFile.length() > 0) {
+        if (caCertFile!=null && caCertFile.length() > 0) {
             builder.withSecureConnection(Files.readAllBytes(Paths.get(caCertFile)));
         }
         transport = builder.build();
