@@ -72,7 +72,7 @@ int tokens = 1000;
 StringBuilder res = new StringBuilder();
 for (int x = 0; x &lt; tokens; x++) {
 	if (res.length() &gt; 0) res.append(&quot;,&quot;);
-	res.append(&quot;\&quot;A&quot;).append(gen.nextInt(100000000)).append(&quot;\&quot;&quot;);
+	res.append(&quot;\&quot;A&quot;).append(gen.nextInt(1000000000)).append(&quot;\&quot;&quot;);
 }
 vars.put(&quot;RANDOM_STRING&quot;, res.toString());
 </stringProp>
