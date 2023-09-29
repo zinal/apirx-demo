@@ -1,0 +1,101 @@
+static_erasure: none
+host_configs:
+- drive:
+  - path: /dev/disk/by-partlabel/ydb_disk_1
+    type: SSD
+  - path: /dev/disk/by-partlabel/ydb_disk_2
+    type: SSD
+  - path: /dev/disk/by-partlabel/ydb_disk_3
+    type: SSD
+  - path: /dev/disk/by-partlabel/ydb_disk_4
+    type: SSD
+  - path: /dev/disk/by-partlabel/ydb_disk_5
+    type: SSD
+  - path: /dev/disk/by-partlabel/ydb_disk_6
+    type: SSD
+  - path: /dev/disk/by-partlabel/ydb_disk_7
+    type: SSD
+  - path: /dev/disk/by-partlabel/ydb_disk_8
+    type: SSD
+  - path: /dev/disk/by-partlabel/ydb_disk_9
+    type: SSD
+  host_config_id: 1
+hosts:
+- host: ydb-s0
+  host_config_id: 1
+  port: 19001
+  walle_location:
+    body: 1
+    data_center: '1'
+    rack: '1'
+domains_config:
+  domain:
+  - name: Root
+    storage_pool_types:
+    - kind: ssd
+      pool_config:
+        box_id: 1
+        erasure_species: none
+        kind: ssd
+        pdisk_filter:
+        - property:
+          - type: SSD
+        vdisk_kind: Default
+  state_storage:
+  - ring:
+      node:
+      - 1
+      nto_select: 1
+    ssid: 1
+table_service_config:
+  sql_version: 1
+actor_system_config:
+  executor:
+  - name: System
+    spin_threshold: 0
+    threads: 8
+    type: BASIC
+  - name: User
+    spin_threshold: 0
+    threads: 4
+    type: BASIC
+  - name: Batch
+    spin_threshold: 0
+    threads: 6
+    type: BASIC
+  - name: IO
+    threads: 4
+    time_per_mailbox_micro_secs: 100
+    type: IO
+  - name: IC
+    spin_threshold: 10
+    threads: 8
+    time_per_mailbox_micro_secs: 100
+    type: BASIC
+  scheduler:
+    progress_threshold: 10000
+    resolution: 256
+    spin_threshold: 0
+blob_storage_config:
+  service_set:
+    groups:
+    - erasure_species: none
+      rings:
+      - fail_domains:
+        - vdisk_locations:
+          - node_id: 1
+            path: /dev/disk/by-partlabel/ydb_disk_1
+            pdisk_category: SSD
+channel_profile_config:
+  profile:
+  - channel:
+    - erasure_species: none
+      pdisk_category: 0
+      storage_pool_kind: ssd
+    - erasure_species: none
+      pdisk_category: 0
+      storage_pool_kind: ssd
+    - erasure_species: none
+      pdisk_category: 0
+      storage_pool_kind: ssd
+    profile_id: 0
