@@ -1,0 +1,9 @@
+
+YDB_BASE=$HOME/yasubd-23.2.12.3-linux-amd64
+export YDB_BASE
+
+LD_LIBRARY_PATH=$YDB_BASE/lib
+export LD_LIBRARY_PATH
+
+PATH=$YDB_BASE/bin:$PATH
+export PATH
