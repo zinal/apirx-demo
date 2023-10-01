@@ -1,4 +1,5 @@
 #! /bin/sh
+# VM creation
 
 . ./options.sh
 
