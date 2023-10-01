@@ -9,7 +9,6 @@ set -u
 work_host=${prefix_run}1
 yql_host=${prefix_dynamic}1
 
-if false; then
 echo "Copying files to the gateway..."
 scp ../run-*.jmx ${gw_user}@${gw_host}:apirx-ditto/
 scp ../ReplaceTable.sh ${gw_user}@${gw_host}:apirx-ditto/
@@ -34,7 +33,8 @@ echo "Starting the tool..."
 for i in `seq 1 ${count_run}`; do
     ssh ${gw_user}@${gw_host} ssh ${vm_user}@${prefix_run}${i} screen -d -m java -jar apirx_test.jar
 done
-fi
+
+sleep 10
 
 echo "Starting the data generator..."
 ssh ${gw_user}@${gw_host} ssh ${vm_user}@${work_host} screen -d -m ./jmeter/bin/jmeter -n -j run-generate.log -t run-generate.jmx
