@@ -1,4 +1,6 @@
 #! /bin/sh
+# YDB disk partitioning and obliteration for Yandex.Cloud VMs.
+# WARNING: this operation will delete all data on the target disk!
 
 set -e
 set -u

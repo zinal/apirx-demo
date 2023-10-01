@@ -21,7 +21,7 @@ host_configs:
     type: SSD
   host_config_id: 1
 hosts:
-- host: ydb-s0
+- host: ydb-s1
   host_config_id: 1
   port: 19001
   walle_location:
