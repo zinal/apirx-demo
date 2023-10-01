@@ -1,6 +1,11 @@
-#! /bin/sh
+#! /bin/bash
 
-sh 01-create-vms.sh
-sh 02-configure-vms.sh
-sh 03-setup.sh
-sh 04-ydb-deploy.sh
+set -e
+set -u
+
+bash 01-create-vms.sh
+bash 02-configure-vms.sh
+bash 03-setup.sh
+bash 04-ydb-deploy.sh
+
+# End Of File

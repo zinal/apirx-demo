@@ -1,4 +1,4 @@
-#! /bin/sh
+#! /bin/bash
 # Software installation
 
 . ./options.sh
@@ -36,26 +36,30 @@ done
 # Unpacking YDB software
 unpackYdb() {
     host_name=$1
-    echo -n "ydb unpack on ${host_name}..."
+    echo "ydb unpack on ${host_name} started."
     ssh ${gw_user}@${gw_host} ssh ${vm_user}@${host_name} tar xfz ${ydb_base}.tar.gz
     ssh ${gw_user}@${gw_host} ssh ${vm_user}@${host_name} rm -rf ydbd
-    ssh ${gw_user}@${gw_host} ssh ${vm_user}@${host_name} mv -v ${ydb_base} ydbd
+    ssh ${gw_user}@${gw_host} ssh ${vm_user}@${host_name} mv ${ydb_base} ydbd
+    echo "ydb unpack on ${host_name} completed."
 }
-unpackYdb ${prefix_static}1
+unpackYdb ${prefix_static}1 &
 for i in `seq 1 ${count_dynamic}`; do
-    unpackYdb ${prefix_dynamic}${i}
+    unpackYdb ${prefix_dynamic}${i} &
 done
 
 # Unpacking JMeter
 unpackJMeter() {
     host_name=$1
-    echo -n "jmeter unpack on ${host_name}..."
+    echo "jmeter unpack on ${host_name} started."
     ssh ${gw_user}@${gw_host} ssh ${vm_user}@${host_name} tar xfz ${jmeter_base}.tar.gz
     ssh ${gw_user}@${gw_host} ssh ${vm_user}@${host_name} rm -rf jmeter
-    ssh ${gw_user}@${gw_host} ssh ${vm_user}@${host_name} mv -v ${jmeter_base} jmeter
+    ssh ${gw_user}@${gw_host} ssh ${vm_user}@${host_name} mv ${jmeter_base} jmeter
+    echo "jmeter unpack on ${host_name} completed."
 }
 for i in `seq 1 ${count_run}`; do
-    unpackJMeter ${prefix_run}${i}
+    unpackJMeter ${prefix_run}${i} &
 done
+
+wait
 
 # End Of File

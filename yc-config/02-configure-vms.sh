@@ -1,4 +1,4 @@
-#! /bin/sh
+#! /bin/bash
 # VM basic configuration
 
 . ./options.sh
@@ -29,13 +29,14 @@ setupNodes() {
             break
         fi
     done
-    echo "Configuring host names and timezones..."
+    echo "Configuring hosts..."
     for i in `seq ${nodes_begin} ${nodes_end}`; do
         vm_name="${host_base}${i}"
         echo "...${vm_name}"
         ssh ${gw_user}@${gw_host} ssh ${vm_user}@${vm_name} sudo hostnamectl set-hostname ${vm_name}
         ssh ${gw_user}@${gw_host} ssh ${vm_user}@${vm_name} sudo timedatectl set-timezone Europe/Moscow
-        ssh ${gw_user}@${gw_host} ssh ${vm_user}@${vm_name} sudo apt-get install -y -q chrony screen mc curl wget parted
+        ssh ${gw_user}@${gw_host} ssh ${vm_user}@${vm_name} sudo apt-get install -y -q screen
+        ssh ${gw_user}@${gw_host} ssh ${vm_user}@${vm_name} screen -d -m sudo apt-get install -y -q chrony mc curl wget parted openjdk-17-jdk
     done
 }
 

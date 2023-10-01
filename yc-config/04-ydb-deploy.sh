@@ -1,4 +1,4 @@
-#! /bin/sh
+#! /bin/bash
 # YDB cluster deployment
 
 . ./options.sh
