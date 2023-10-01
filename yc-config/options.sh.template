@@ -1,31 +1,36 @@
-# Настройки процесса создания виртуальных машин
+# VM creation settings
 
-# Имя промежуточного "хоста подскока", с которого видны создаваемые виртуалки
-host_gw=run0
-# Имя пользователя на виртуалках с правом на беспарольный sudo.
-# Необходим беспарольный ssh-доступ с "хоста подскока".
-host_user=yc-user
-
-# Имя файла публичного ключа на "хосте подскока",
-# который нужно прописать при создании виртуалок для беспарольного входа.
-keyfile_gw=.ssh/id_ecdsa.pub
-
-# AZ Яндекс Облака, в которой создаются виртуалки
+# Number of YDB dynamic nodes
+count_dynamic=9
+# Number of workload runner nodes
+count_run=3
+# VM name prefixes
+prefix_run=run
+prefix_static=ydb-s
+prefix_dynamic=ydb-d
+# Public gateway host
+gw_host=run0
+gw_user=demo
+gw_keyfile=.ssh/id_ecdsa.pub
+# By default VMs have yc-user created
+vm_user=yc-user
+# VM CPU and memory settings
+cpu_static=32
+mem_static=32
+cpu_dynamic=16
+mem_dynamic=32
+cpu_run=8
+mem_run=16
+# Disk configuration
+boot_disk_size=50G
+boot_disk_class=network-ssd
+data_disk_count=9
+data_disk_size=186G
+data_disk_class=network-ssd-nonreplicated
+# Network selection
 yc_zone=ru-central1-b
-# Существующая подсеть в Яндекс Облаке
 yc_subnet=default-ru-central1-b
-# Тип платформы виртуалок, standard-v2 или standard-v3
 yc_platform=standard-v3
-# Выбранный образ операционной системы виртуалок
-#yc_vm_image="image-folder-id=standard-images,image-family=ubuntu-2204-lts"
-#yc_vm_image="image-folder-id=standard-images,image-name=astralinux-alse-v20230215"
-#yc_vm_image="image-folder-id=standard-images,image-name=redsoft-red-os-standart-server-7-3-v20220810"
-#yc_vm_image="image-folder-id=standard-images,image-name=almalinux-9-v20230417"
-#yc_vm_image="image-folder-id=standard-images,image-name=almalinux-v20230417"
 yc_vm_image="image-folder-id=standard-images,image-name=ubuntu-22-04-lts-v20230925"
-# Количество vCPU каждой виртуалки
-yc_vm_cores=16
-# Объем оперативной памяти на одну виртуалку, Гбайт
-yc_vm_mem=32
 
 # End Of File
