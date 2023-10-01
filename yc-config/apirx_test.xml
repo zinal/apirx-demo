@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+<entry key="url">grpc://DB_NODE:2136/?database=/Root/testdb</entry>
+<entry key="auth.mode">NONE</entry> <!-- NONE, SAKEY, META, LOGIN -->
+<entry key="pool.max">1000</entry>
+</properties>
