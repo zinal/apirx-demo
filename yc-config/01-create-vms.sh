@@ -111,3 +111,5 @@ waitDisks
 
 echo "Creating YDB static VM..."
 makeVMs ${prefix_static} 1 ${data_disk_count} ${cpu_static} ${mem_static} standard-v2
+
+# End Of File
