@@ -51,7 +51,7 @@
 
 Сценарий 1:
 
-```
+```text
 summary +  15302 in 00:00:30 =  510.1/s Avg:    61 Min:    14 Max:   274 Err:     0 (0.00%) Active: 100 Started: 100 Finished: 0
 summary = 2740765 in 01:29:59 =  507.6/s Avg:    87 Min:     9 Max:  2148 Err:     0 (0.00%)
 summary +  15169 in 00:00:30 =  505.6/s Avg:    86 Min:    13 Max:   381 Err:     0 (0.00%) Active: 100 Started: 100 Finished: 0
@@ -66,7 +66,7 @@ summary = 2801619 in 01:31:59 =  507.6/s Avg:    86 Min:     9 Max:  2148 Err:  
 
 Сценарий 2:
 
-```
+```text
 summary +  13761 in 00:00:30 =  458.7/s Avg:    90 Min:    15 Max:   386 Err:     0 (0.00%) Active: 100 Started: 100 Finished: 0
 summary = 2548083 in 01:30:07 =  471.3/s Avg:    90 Min:    11 Max:  1920 Err:     0 (0.00%)
 summary +  13773 in 00:00:30 =  459.1/s Avg:    76 Min:    15 Max:   408 Err:     0 (0.00%) Active: 100 Started: 100 Finished: 0
@@ -81,7 +81,7 @@ summary = 2603178 in 01:32:07 =  471.0/s Avg:    89 Min:    11 Max:  1920 Err:  
 
 Сценарий 3:
 
-```
+```text
 summary +  15566 in 00:00:30 =  518.8/s Avg:    74 Min:    13 Max:   337 Err:     0 (0.00%) Active: 100 Started: 100 Finished: 0
 summary = 2922887 in 01:27:34 =  556.3/s Avg:    89 Min:     9 Max:  1566 Err:     0 (0.00%)
 summary +  15432 in 00:00:30 =  514.4/s Avg:    78 Min:    12 Max:   385 Err:     0 (0.00%) Active: 100 Started: 100 Finished: 0
@@ -96,7 +96,7 @@ summary = 2984602 in 01:29:34 =  555.3/s Avg:    89 Min:     9 Max:  1566 Err:  
 
 Средние значения пропускной способности, взятые по последней агрегированной строке в каждом случае, суммируем и получаем среднюю совокупную пропускную способность:
 
-```
+```text
 507.6 + 471.0 + 555.3 = 1533.9
 ```
 
