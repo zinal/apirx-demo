@@ -62,4 +62,6 @@ done
 
 wait
 
+sleep 10
+
 # End Of File
