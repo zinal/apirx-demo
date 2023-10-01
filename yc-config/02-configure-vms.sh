@@ -35,7 +35,7 @@ setupNodes() {
         echo "...${vm_name}"
         ssh ${gw_user}@${gw_host} ssh ${vm_user}@${vm_name} sudo hostnamectl set-hostname ${vm_name}
         ssh ${gw_user}@${gw_host} ssh ${vm_user}@${vm_name} sudo timedatectl set-timezone Europe/Moscow
-        ssh ${gw_user}@${gw_host} ssh ${vm_user}@${vm_name} sudo apt-get install -y -q chrony screen mc curl wget
+        ssh ${gw_user}@${gw_host} ssh ${vm_user}@${vm_name} sudo apt-get install -y -q chrony screen mc curl wget parted
     done
 }
 
